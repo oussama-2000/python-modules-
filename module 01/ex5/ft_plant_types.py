@@ -21,28 +21,27 @@ class Flower(Plant):
 class Tree(Plant):
     def __init__(self, name, height, age, trunk_diameter):
         super().__init__(name, height, age)
-        self.meters = trunk_diameter
+        self.trunk_diameter = trunk_diameter
 
     def produce_shade(self):
         # Area = π × r²
-        raduis = self.meters / 2
-        square_raduis = raduis * raduis
-        square_meters = 3.14 * square_raduis
-        print(f"{self.name} provides {square_meters:.0f} square meters of shade")
+        radius = self.height / 100
+        shade_area = 3.14 * (radius ** 2)
+        print(f"{self.name} provides {shade_area:.0f} square meters of shade")
 
     def show_char(self):
         print(f"{self.name} (Tree): {self.height}cm,"
-              f" {self.age} days, {self.meters}cm diameter")
+              f" {self.age} days, {self.trunk_diameter}cm diameter")
 
 
 class Vegetable(Plant):
     def __init__(self, name, height, age, harvest_season, nutritional_value):
         super().__init__(name, height, age)
         self.season = harvest_season
-        self.value = nutritional_value
+        self.nutritional_value = nutritional_value
 
     def show_nutritional_value(self):
-        print(f"{self.name} is rich in {self.value}")
+        print(f"{self.name} is rich in {self.nutritional_value}")
 
     def show_char(self):
         print(f"{self.name} (Vegetable): {self.height}cm,"
