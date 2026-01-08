@@ -1,4 +1,3 @@
-# type hints not forced 
 def ft_seed_inventory(seed_type: str, quantity: int, unit: str) -> None:
 
     units_status = {"packets": "packets available", "grams": "grams total",
