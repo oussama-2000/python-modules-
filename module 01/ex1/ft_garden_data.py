@@ -8,6 +8,7 @@ class Plant:
         print(f"{self.name}: {self.height}cm, {self.age} days old")
 
 
+# object creatin
 plant_1 = Plant("Rose", 25, 30)
 plant_2 = Plant("Sunflower", 80, 45)
 plant_3 = Plant("Cactus", 15, 120)
