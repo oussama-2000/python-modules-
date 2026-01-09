@@ -16,10 +16,36 @@ class PrizeFlower(Flower):
         self.prize = prize
 
 
-class GardenManager():
+class GardenManager:
     def __init__(self, owner):
         self.owner = owner
         self.plants = []
+        self.stats = self.GardenStats(self.plants)
+        self.growth_t = 0
+
+    class GardenStats:
+        def __init__(self, plants):
+            self.plants = plants
+            self.types_count = {"regular": 0, "flowering": 0, "prize_flowers": 0}
+            self.plants_number = 0
+            self.growth_total = 0
+
+        def count_types(self):
+            for plant in self.plants:
+                if type(plant) is Plant:
+                    self.types_count["regular"] += 1
+                elif type(plant) is Flower:
+                    self.types_count["flowering"] += 1
+                elif type(plant) is PrizeFlower:
+                    self.types_count["prize_flowers"] += 1
+
+        def count_plants_number(self):
+            for i in self.plants:
+                self.plants_number += 1
+
+        def grew(self, value):
+            self.growth_total += value
+
 
     def create_garden_network(self, plant):
         self.plants += [plant]
@@ -35,6 +61,7 @@ class GardenManager():
         for plant in self.plants:
             plant.height += values[j]
             print(f"{plant.name} grew {values[j]}cm")
+            self.stats.grew(values[j])
             j += 1
 
     def generate_report(self):
@@ -48,8 +75,13 @@ class GardenManager():
             else:
                 print(f"- {plant.name}: {plant.height}cm, {plant.color}"
                       f"flowers (blooming), Prize points: {plant.prize}")
-
-
+        self.stats.count_plants_number()
+        print(f"\nPlants added: {self.stats.plants_number},Total growth:{self.stats.growth_total}cm")
+        self.stats.count_types()
+        print("Plant types:", end=" ")
+        print(self.stats.types_count["regular"], "regular", end=" ")
+        print(self.stats.types_count["flowering"], "flowering", end=" ")
+        print(self.stats.types_count["prize_flowers"], "prize flowers")
 
 
 plant_1_info = ["Oak Tree", 100, 101]
@@ -81,3 +113,5 @@ garden1.grow_all(values)
 
 print("\n=== Alice's Garden Report ===")
 garden1.generate_report()
+
+
