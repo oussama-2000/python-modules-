@@ -17,12 +17,14 @@ class PrizeFlower(Flower):
 
 
 class GardenManager:
+    managers = []
+
     def __init__(self, owner):
         self.owner = owner
         self.plants = []
         self.stats = self.GardenStats(self.plants)
-        self.growth_t = 0
-
+        GardenManager.managers.append(self)
+       
     class GardenStats:
         def __init__(self, plants):
             self.plants = plants
@@ -46,8 +48,7 @@ class GardenManager:
         def grew(self, value):
             self.growth_total += value
 
-
-    def create_garden_network(self, plant):
+    def add_plant(self, plant):
         self.plants += [plant]
         print(f"Added {plant.name} to {self.owner}'s garden")
 
@@ -65,6 +66,7 @@ class GardenManager:
             j += 1
 
     def generate_report(self):
+        print(f"\n=== {self.owner} Garden Report ===")
         print("Plants in garden:")
         for plant in self.plants:
             if type(plant) is Plant:
@@ -76,12 +78,42 @@ class GardenManager:
                 print(f"- {plant.name}: {plant.height}cm, {plant.color}"
                       f"flowers (blooming), Prize points: {plant.prize}")
         self.stats.count_plants_number()
-        print(f"\nPlants added: {self.stats.plants_number},Total growth:{self.stats.growth_total}cm")
+        print(f"\nPlants added: {self.stats.plants_number},Total growth: {self.stats.growth_total}cm")
         self.stats.count_types()
         print("Plant types:", end=" ")
         print(self.stats.types_count["regular"], "regular", end=" ")
         print(self.stats.types_count["flowering"], "flowering", end=" ")
         print(self.stats.types_count["prize_flowers"], "prize flowers")
+
+    def create_garden_network(self):
+        valid = True
+
+        for manager in self.managers:
+            for plant in manager.plants:
+                if plant.height <= 0:
+                    valid = False
+
+        print(f"\nHeight validation test: {valid}")
+        print("Garden scores - ", end="")
+        i = 0
+        for manager in self.managers:
+            total_height = 0
+            for p in manager.plants:
+                total_height += p.height
+
+            prize_points = 0
+            for p in manager.plants:
+                if type(p) is PrizeFlower:
+                    prize_points += p.prize
+
+            growth_bonus = manager.stats.growth_total * 10
+
+            score = total_height + prize_points + growth_bonus
+            sep = ", " if i < len(self.managers) - 1 else ""
+            print(f" {manager.owner}: {score}{sep}", end="")
+            i += 1
+        total_gardens = len(self.managers)
+        print(f"\nTotal gardens managed: {total_gardens}")
 
 
 plant_1_info = ["Oak Tree", 100, 101]
@@ -95,11 +127,11 @@ plant2 = Flower(plant_2_info[0], plant_2_info[1], plant_2_info[2])
 plant3 = PrizeFlower(plant_3_info[0], plant_3_info[1], plant_3_info[2],
                      plant_3_info[3])
 
-garden1 = GardenManager("Alice")
+manager1 = GardenManager("Alice")
 plants = plant1, plant2, plant3
 
 for i in plants:
-    garden1.create_garden_network(i)
+    manager1.add_plant(i)
 
 print("\n")
 plant_infos = plant_1_info, plant_2_info, plant_3_info
@@ -109,9 +141,14 @@ for i in plant_infos:
     values += [GardenManager.grow_tracker(plant_infos[0][-1],
                plant_infos[0][1])]
 
-garden1.grow_all(values)
+manager1.grow_all(values)
 
-print("\n=== Alice's Garden Report ===")
-garden1.generate_report()
+manager1.generate_report()
 
+manager2 = GardenManager("Bob")
 
+plant2 = Flower(plant_2_info[0], plant_2_info[1] + 67, plant_2_info[2])
+
+manager2.add_plant(plant2)
+
+manager1.create_garden_network()
