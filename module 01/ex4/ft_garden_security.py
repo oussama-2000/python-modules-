@@ -37,4 +37,5 @@ plant.set_age(30)
 print("\n")
 plant.set_height(-5)
 print("\n")
-print(f"Current plant: {plant.name} ({plant.height}cm, {plant.age} days)")
+print(f"Current plant: {plant.name} ({plant.get_height()}cm,"
+      f"{plant.get_age()} days)")
