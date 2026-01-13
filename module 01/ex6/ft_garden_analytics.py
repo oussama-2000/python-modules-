@@ -127,6 +127,7 @@ plant2 = Flower(plant_2_info[0], plant_2_info[1], plant_2_info[2])
 plant3 = PrizeFlower(plant_3_info[0], plant_3_info[1], plant_3_info[2],
                      plant_3_info[3])
 
+
 manager1 = GardenManager("Alice")
 plants = plant1, plant2, plant3
 
