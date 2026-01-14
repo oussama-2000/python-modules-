@@ -48,3 +48,4 @@ def test_custom_errors():
         print(f"Caught a garden error: {e}")
 
     print("\nAll custom error types work correctly!")
+test_custom_errors()
