@@ -1,5 +1,5 @@
 class SecurePlant:
-    def __init__(self, name, height, age):
+    def __init__(self, name: str, height: str, age: int):
         self.name = name
         self.height = height
         self.age = age
@@ -29,13 +29,24 @@ class SecurePlant:
         return self.age
 
 
-plant = SecurePlant("Rose", 19, 28)
-print("=== Garden Security System ===")
-print(f"Plant created: {plant.name}")
-plant.set_height(25)
-plant.set_age(30)
-print("\n")
-plant.set_height(-5)
-print("\n")
-print(f"Current plant: {plant.name} ({plant.get_height()}cm,"
-      f"{plant.get_age()} days)")
+def program_test() -> None:
+
+    plant = SecurePlant("Rose", 19, 28)
+    print("=== Garden Security System ===")
+    print(f"Plant created: {plant.name}")
+
+    plant.set_height(25)
+    plant.set_age(30)
+
+    print("\n")
+
+    plant.set_height(-5)
+
+    print("\n")
+
+    print(f"Current plant: {plant.name} ({plant.get_height()}cm,"
+          f"{plant.get_age()} days)")
+
+
+if __name__ == "__main__":
+    program_test()
