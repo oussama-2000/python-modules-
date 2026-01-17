@@ -1,28 +1,27 @@
 
-def validate_plant_height(plant):
-    """Non-member function operating on class instances"""
-    return plant.height > 0
-
-
 class Plant:
+    """plant class (common features)"""
     def __init__(self, name, height):
         self.name = name
         self.height = height
 
 
 class Flower(Plant):
+    """flower plant type class"""
     def __init__(self, name, height, color):
         super().__init__(name, height)
         self.color = color
 
 
 class PrizeFlower(Flower):
+    """PrizeFlower plant type class"""
     def __init__(self, name, height, color, prize):
         super().__init__(name, height, color)
         self.prize = prize
 
 
 class GardenManager:
+    """garden manager class"""
     managers = []
 
     def __init__(self, owner):
@@ -31,8 +30,8 @@ class GardenManager:
         self.stats = self.GardenStats(self.plants)
         GardenManager.managers.append(self)
 
-    # Nested class
     class GardenStats:
+        """inner class for statistics calculation"""
         def __init__(self, plants):
             self.plants = plants
             self.types_count = {
@@ -58,6 +57,11 @@ class GardenManager:
 
         def grew(self, value):
             self.growth_total += value
+
+        @staticmethod
+        def validate_plant_height(plant):
+            """utility function"""
+            return plant.height > 0
 
     # Instance methods
     def add_plant(self, plant):
@@ -110,7 +114,7 @@ class GardenManager:
 
         for manager in cls.managers:
             for plant in manager.plants:
-                if plant.height <= 0:
+                if cls.stats.validate_plant_height(plant) == 0:
                     valid = False
 
         print(f"\nHeight validation test: {valid}")
