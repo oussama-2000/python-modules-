@@ -1,19 +1,33 @@
 class Plant:
-    def __init__(self, name, s_height, s_age):
+    """plant class"""
+
+    def __init__(self, name: str, s_height: int, s_age: int):
         self.name = name
         self.s_height = s_height
         self.s_age = s_age
 
-    def get_info(self):
         print(f"Created : {self.name} ({self.s_height}cm, {self.s_age} days)")
 
 
-plants = {1: ["Rose", 25, 30], 2: ["Oak", 200, 365], 3: ["Cactus", 5, 90],
-          4: ["Sunflower", 80, 45], 5: ["Fern", 15, 120]}
-plants_number = 0
-print("=== Plant Factory Output ===")
-for key, val in plants.items():
-    key = Plant(val[0], val[1], val[2])
-    key.get_info()
-    plants_number += 1
-print(f"\nTotal plants created: {plants_number}")
+def protram_test() -> None:
+
+    plant_1 = ["Rose", 25, 30]
+    plant_2 = ["Oak", 200, 365]
+    plant_3 = ["Cactus", 5, 90]
+    plant_4 = ["Sunflower", 80, 45]
+    plant_5 = ["Fern", 15, 120]
+
+    plants = plant_1, plant_2, plant_3, plant_4, plant_5
+
+    plants_number = 0
+    print("=== Plant Factory Output ===")
+
+    for plant in plants:
+        Plant(plant[0], plant[1], plant[2])
+        plants_number += 1
+
+    print(f"\nTotal plants created: {plants_number}")
+
+
+if __name__ == "__main__":
+    protram_test()
