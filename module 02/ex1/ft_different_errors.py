@@ -25,14 +25,19 @@ def garden_operations():
         print(f"Caught KeyError: {e}")
 
     print("\nTesting multiple errors together...")
-    try:
-        int("abc")
-        _ = 1 / 0
-    except (ValueError, ZeroDivisionError):
-        print("Caught an error, but program continues!")
 
 
 def test_error_types():
     print("=== Garden Error Types Demo ===\n")
     garden_operations()
+
+    try:
+        int("abc")
+        _ = 1 / 0
+    except (ValueError, ZeroDivisionError):
+        print("Caught an error, but program continues!")
     print("\nAll error types tested successfully!")
+
+
+if __name__ == "__main__":
+    test_error_types()
