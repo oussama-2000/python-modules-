@@ -1,6 +1,6 @@
 class Plant:
     """plant class with common features"""
-    def __init__(self, name: str, height: int, age: int):
+    def __init__(self, name: str, height: int, age: int) -> None:
         self.name = name
         self.height = height
         self.age = age
@@ -9,7 +9,7 @@ class Plant:
 class Flower(Plant):
     """flower plant type class"""
 
-    def __init__(self, name: str, height: int, age: int, color: str):
+    def __init__(self, name: str, height: int, age: int, color: str) -> None:
         super().__init__(name, height, age)
         self.color = color
 
@@ -19,6 +19,7 @@ class Flower(Plant):
         print(f"{self.name} is blooming beautifully!")
 
     def show_char(self) -> None:
+        """show characteristics"""
         print(f"{self.name} (Flower): {self.height}cm,"
               f" {self.age} days, {self.color} color")
 
@@ -32,7 +33,7 @@ class Tree(Plant):
             height: str,
             age: str,
             trunk_diameter: int
-            ):
+            ) -> None:
 
         super().__init__(name, height, age)
         self.trunk_diameter = trunk_diameter
@@ -58,7 +59,7 @@ class Vegetable(Plant):
             age: int,
             harvest_season: str,
             nutritional_value: str
-            ):
+            ) -> None:
 
         super().__init__(name, height, age)
         self.season = harvest_season

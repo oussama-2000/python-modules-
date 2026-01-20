@@ -22,7 +22,11 @@ def test_temperature_input():
         print(f"\nTesting temperature: {value}")
         try:
             check_temperature(value)
-        except ValueError as e:
+        except Exception as e:
             print(f"Error: {e}")
 
     print("\nAll tests completed- program didn't crash!")
+
+
+if __name__ == "__main__":
+    test_temperature_input()

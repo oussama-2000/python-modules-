@@ -1,7 +1,7 @@
 class SecurePlant:
     """secure plant class"""
 
-    def __init__(self, name: str, height: str, age: int):
+    def __init__(self, name: str, height: str, age: int) -> None:
         self.name = name
         self.__height = None
         self.__age = None
@@ -20,7 +20,7 @@ class SecurePlant:
             print(f"height {new_height}cm [REJECTED]")
             print("Security: Negative height rejected")
 
-    def set_age(self, new_age: int, message: int):
+    def set_age(self, new_age: int, message: int) -> None:
         """setter for set age protprity"""
 
         if (new_age > 0):
@@ -32,14 +32,12 @@ class SecurePlant:
             print(f"age {new_age}cm [REJECTED]")
             print("Security: Negative age rejected")
 
-    def get_height(self):
+    def get_height(self) -> int:
         """getter for get height proprity"""
-
         return self.__height
 
-    def get_age(self):
+    def get_age(self) -> int:
         """getter for get age proprity"""
-
         return self.__age
 
 
