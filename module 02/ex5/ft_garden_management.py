@@ -1,16 +1,23 @@
+import string
+
+
 class GardenError(Exception):
+    """custum garden Error Error"""
     pass
 
 
 class PlantError(GardenError):
+    """custum plant Error Error"""
     pass
 
 
 class WaterError(GardenError):
+    """custum water Error Error"""
     pass
 
 
 def is_number(input: any) -> bool:
+    """helper function to check numbers"""
     try:
         float(input)
         return True
@@ -18,95 +25,137 @@ def is_number(input: any) -> bool:
         return False
 
 
+def c_isspace(s: any) -> bool:
+    """helper function to check whitespaces"""
+    if not s:
+        return True
+    try:
+        for char in s:
+            if char not in string.whitespace:
+                return False
+    except TypeError:
+        return False
+    return True
+
+
 class GardenManager:
+    """garden manager class"""
     plants = []
 
     @classmethod
-    def add_plants(cls, plant_list: str):
-
-        print("Adding plants to garden...")
+    def add_plant(cls, plant: list = None) -> None:
+        """adds plant to garden"""
         try:
-            if plant_list is None or is_number(plant_list):
+            if is_number(plant) or c_isspace(plant):
                 raise PlantError("Error adding plant: no plant list given !")
         except PlantError as e:
             print(e)
-        if plant_list is not None and is_number(plant_list) is False:
-            for plant in plant_list:
-                try:
-                    if plant["name"] is None:
-                        raise PlantError("Error adding plant: Plant name cannot be empty!")
+        if plant and is_number(plant) is False and c_isspace(plant) is False:
+            try:
+                # validate plant name
+                if is_number(plant[0]):
+                    raise PlantError("Error adding plant: Plant name"
+                                     " cannot be a number!")
 
-                    if is_number(plant["name"]):
-                        raise PlantError("Error adding plant: Plant name cannot be a number!")
+                if plant[0] is None or c_isspace(plant[0]):
+                    raise PlantError("Error adding plant: Plant name"
+                                     " cannot be empty!")
 
-                    cls.plants += [plant]
-                    print(f"Added {plant['name']} successfully")
-                except GardenError as e:
-                    print(e)
+                # validate plant water level
+                if is_number(plant[1]) is False or c_isspace(plant[1]):
+                    raise PlantError("Error adding plant: Plant water"
+                                     " level must be int!")
+
+                # validate plant sunlight
+                if is_number(plant[2]) is False or c_isspace(plant[2]):
+                    raise PlantError("Error adding plant: Plant sunlight"
+                                     " must be int!")
+
+                cls.plants += [plant]
+                print(f"Added {plant[0]} successfully")
+            except GardenError as e:
+                print(e)
 
     @classmethod
-    def water_plants(cls):
-        print("Watering plants...")
+    def water_plants(cls) -> None:
+        """waters plants"""
         plant_list = cls.plants
         print("Opening watering system")
         try:
             for plant in plant_list:
-                if plant["name"]:
-                    print(f"Watering {plant['name']} - success")
+                if plant[0]:
+                    print(f"Watering {plant[0]} - success")
                 else:
-                    raise WaterError("Error:  Cannot water None - invalid plant!")
+                    raise WaterError("Error:  Cannot water None -"
+                                     " invalid plant!")
         except WaterError as e:
             print(e)
         finally:
             print("Closing watering system (cleanup)")
 
     def check_plant_health(cls) -> None:
-        print("Checking plant health...")
+        """checks plants health"""
         for plant in cls.plants:
             try:
-                if plant["name"] is None:
-                    raise ValueError("Error checking lettuce: Plant name cannot be empty!")
-                elif plant["water"] > 10:
-                    raise ValueError("Error checking lettuce: Water level "
-                                     f"{plant['water']}"
+                if plant[1] > 10:
+                    raise WaterError("Error checking lettuce: Water level "
+                                     f"{plant[1]}"
                                      " is too high (max 10)")
-                elif plant["water"] < 1:
-                    raise ValueError("Error checking lettuce: Water level "
-                                     f"{plant['water']}"
+                elif plant[1] < 1:
+                    raise WaterError("Error checking lettuce: Water level "
+                                     f"{plant[1]}"
                                      " is too low (min 1)")
-                elif plant["sun"] > 12:
-                    raise ValueError("Error checking lettuce: Sunlight hours "
-                                     f"{plant['sun']}"
+                elif plant[2] > 12:
+                    raise PlantError("Error checking lettuce: Sunlight hours "
+                                     f"{plant[2]}"
                                      " is too high (max 12)")
-                elif plant["sun"] < 2:
-                    raise ValueError("Error checking lettuce: Sunlight hours "
-                                     f"{plant['sun']}"
+                elif plant[2] < 2:
+                    raise PlantError("Error checking lettuce: Sunlight hours "
+                                     f"{plant[2]}"
                                      " is too low (min 2)")
                 else:
-                    print(f"{plant['name']} : healthy (water: {plant['water']}"
-                          f"sun: {plant['sun']}"
+                    print(f"{plant[0]} : healthy (water: {plant[1]}"
+                          f" sun: {plant[2]})"
                           )
-            except ValueError as e:
+            except GardenError as e:
                 print(e)
 
 
 def test_garden_management() -> None:
+    """demonstration"""
+    print("=== Garden Management System ===\n")
 
     garden1 = GardenManager()
 
-    plants = [
-            {"name": "tomato", "water": 5, "sun": 8},
-            {"name": "lettuce", "water": 15, "sun": 8},
-            {"name": None, "water": 15, "sun": 8}
-            ]
+    plant1 = ["tomato", 5, 8]
+    plant2 = ["lettuce", 15, 6]
+    plant3 = [None, 7, 8]
 
-    garden1.add_plants(plants)
-    print("\n")
+    plants = plant1, plant2, plant3
+    print("Adding plants to garden...")
+    for plant in plants:
+        garden1.add_plant(plant)
 
+    print("\nWatering plants...")
     garden1.water_plants()
-    print("\n")
 
+    print("\nChecking plant health...")
     garden1.check_plant_health()
+
+    plant1[1] = 0
+    print("\nTesting error recovery...")
+    try:
+        for plant in plants:
+            if plant[1] < 1:
+                raise WaterError("Not enough water in the tank")
+            else:
+                print(f"The {plant[1]} plant water level is good")
+    except WaterError as e:
+        print(f"Caught WaterError: {e}")
+    finally:
+        print("System recovered and continuing...")
+
+    print("\nGarden management system test complete!")
 
 
 if __name__ == "__main__":

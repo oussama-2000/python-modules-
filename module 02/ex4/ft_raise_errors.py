@@ -1,15 +1,30 @@
+import string
+
+
+def c_isspace(s: any) -> bool:
+    """helper function to check whitespaces"""
+    if not s:
+        return True
+    try:
+        for char in s:
+            if char not in string.whitespace:
+                return False
+    except TypeError:
+        return False
+    return True
+
 
 def check_plant_health(plant_name: str = None,
                        water_level: int = None,
                        sunlight_hours: int = None
                        ) -> None:
-
+    """checks plant health"""
     try:
         if (plant_name is None and
            water_level is None and
            sunlight_hours is None):
             raise ValueError("Error: no parameter !")
-        if plant_name is None:
+        if plant_name is None or c_isspace(plant_name):
             raise ValueError("Error: Plant name cannot be empty!")
         elif water_level > 10:
             raise ValueError(f"Error: Water level {water_level} "
@@ -30,7 +45,7 @@ def check_plant_health(plant_name: str = None,
 
 
 def test_plant_checks() -> None:
-
+    """plant health demonstration"""
     print("=== Garden Plant Health Checker ===\n")
 
     print("Testing good values...")
@@ -39,7 +54,7 @@ def test_plant_checks() -> None:
     print("\n")
 
     print("Testing empty plant name...")
-    check_plant_health(None, 7, 10)
+    check_plant_health(" ", 7, 10)
     print("\n")
 
     print("Testing bad water level...")

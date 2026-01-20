@@ -1,17 +1,23 @@
 class GardenError(Exception):
+    """for garden problems"""
     pass
 
 
 class PlantError(GardenError):
+    """For problems with plants"""
     pass
 
 
 class WaterError(GardenError):
+    """For problems with watering"""
     pass
 
 
-def test_custom_errors():
+def test_custom_errors() -> None:
+    """demonstration"""
+
     print("=== Custom Garden Errors Demo ===")
+
     plant = {"name": "tomato", "water_level": 0, "sunlight": 1}
 
     print("\nTesting PlantError...")

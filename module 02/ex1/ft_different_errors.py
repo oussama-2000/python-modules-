@@ -1,7 +1,9 @@
-def garden_operations():
+def garden_operations() -> None:
+    """demonstrates common errors"""
     print("Testing ValueError...")
     try:
-        int("abc")
+        input = "abc"
+        int(input)
     except ValueError:
         print("Caught ValueError: invalid literal for int()")
 
@@ -24,17 +26,19 @@ def garden_operations():
     except KeyError as e:
         print(f"Caught KeyError: {e}")
 
-    print("\nTesting multiple errors together...")
 
-
-def test_error_types():
+def test_error_types() -> None:
+    """demonstrate single and multiple errors"""
     print("=== Garden Error Types Demo ===\n")
     garden_operations()
 
+    print("\nTesting multiple errors together...")
     try:
         int("abc")
         _ = 1 / 0
     except (ValueError, ZeroDivisionError):
+        pass
+    finally:
         print("Caught an error, but program continues!")
     print("\nAll error types tested successfully!")
 
