@@ -1,34 +1,27 @@
-import sys
 import math
 
 
-def parsing() -> tuple:
+def parsing(args: str = None, message: bool = True) -> tuple:
     """parsing args to make clean coordinates tuple"""
-    args = sys.argv
-    args_count = len(args) - 1
 
     try:
-        if args_count < 1:
-            print("no coordinates given !")
-            return None
-        elif args_count > 1:
-            print("coordinates form must be as <x,y,z>")
-            return None
-        else:
-            coords = args[1].split(",")
-            result = []
-            for c in coords:
-                result += [int(c)]
-            result = tuple(result)
-            if len(result) != 3:
-                raise ValueError("coordinates must be 3 dimensions(x,y,z)")
-    except (ValueError, TypeError) as e:
-        print(f"Parsing invalid coordinates: \"{args[1]}\"")
+        if not args:
+            raise TypeError("no coordinates given")
+        coords = args.split(",")
+        result = []
+        for c in coords:
+            result += [int(c)]
+        result = tuple(result)
+        if len(result) != 3: #len !
+            raise ValueError("coordinates must be 3 dimensions(x,y,z)")
+    except (ValueError, TypeError, AttributeError) as e:
+        print(f"Parsing invalid coordinates: \"{args}\"")
         print(f"Error parsing coordinates: {e}")
         print(f"Error details - Type: {type(e).__name__}, Args: {e.args}")
     else:
-        print(f"Parsing coordinates: \"{args[1]}\"")
-        print(f"Parsed position: {result}")
+        if message:
+            print(f"Parsing coordinates: \"{args}\"")
+            print(f"Parsed position: {result}")
         return result
 
 
@@ -58,7 +51,25 @@ def unpacking(coordinates: tuple) -> None:
 
 if __name__ == "__main__":
     print("=== Game Coordinate System ===\n")
-    parsed_coordinates = parsing()
+
+    # test1
+    coordinates_1 = parsing("10, 20, 5", False)
+    if coordinates_1:
+        print(f"Position created: {coordinates_1}")
+        calculate_distance(coordinates_1)
+
+    print()
+    # test2
+    coordinates_2 = parsing("3,4,0")
+    if coordinates_2:
+        calculate_distance(coordinates_2)
+
+    print()
+    # test3
+    parsed_coordinates = parsing("abc,def,ghi")
     if parsed_coordinates:
         calculate_distance(parsed_coordinates)
-        unpacking(parsed_coordinates)
+
+    if coordinates_2:
+        print()
+        unpacking(coordinates_2)
