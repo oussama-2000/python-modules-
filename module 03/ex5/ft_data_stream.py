@@ -60,10 +60,11 @@ def process_events(number: int) -> any:
 
 
 def demo() -> None:
+    """demonstration"""
     print("=== Game Data Stream Processor ===")
 
     events = process_events(1000)
-    # print(events)
+
     total = 0
     height_level = 0
     treasure_events = 0
@@ -127,8 +128,7 @@ def demo() -> None:
 
 
 if __name__ == "__main__":
-    demo()
-    # try:
-    #     demo()
-    # except Exception as e:
-    #     print(e)
+    try:
+        demo()
+    except Exception as e:
+        print(e)

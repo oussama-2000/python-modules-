@@ -1,6 +1,7 @@
 
 
 def achi_tracker() -> tuple:
+    """shows players achievements"""
     print("=== Achievement Tracker System ===\n")
     player_1 = {
         "name": "Alice",
@@ -24,7 +25,7 @@ def achi_tracker() -> tuple:
 
 
 def achi_analyse(players: tuple) -> None:
-
+    """analyse achievement statictics """
     print("\n=== Achievement Analytics ===")
     player_1, player_2, player_3 = players
 
@@ -42,6 +43,7 @@ def achi_analyse(players: tuple) -> None:
     diff_3_12 = player_3["achi"].difference(player_1["achi"], player_2["achi"])
 
     rare_achi = diff_1_23.union(diff_2_13, diff_3_12)
+
     print(f"Rare achievements (1 player): {rare_achi}")
     print()
 
@@ -56,5 +58,8 @@ def achi_analyse(players: tuple) -> None:
 
 
 if __name__ == "__main__":
-    players_achi = achi_tracker()
-    achi_analyse(players_achi)
+    try:
+        players_achi = achi_tracker()
+        achi_analyse(players_achi)
+    except Exception as e:
+        print(f"Error : {e}")

@@ -13,7 +13,7 @@ def analyes() -> dict:
     data = {
         'players': [
             {
-                "name": "zlice",
+                "name": "alice",
                 "achi": {'first_kill', 'level_10', 'treasure_hunter',
                          'speed_demon'
                          },
@@ -84,7 +84,6 @@ def analyes() -> dict:
     for score in scores:
         if is_doubled(scores, score) and score not in data['scores_doubled']:
             data['scores_doubled'] += [score]
-    # print(data['scores_doubled'])
 
     # find active players and regions
     for player in data['players']:
@@ -128,7 +127,7 @@ def show_stats(data: dict) -> None:
     print("\n=== Dict Comprehension Examples ===")
     print("Player scores: {", end="")
     i = 1
-    
+
     for player in data['players']:
         print(f"'{player['name']}': {player['score']}"
               f"{', ' if i < len(data['players']) else ''}", end="")

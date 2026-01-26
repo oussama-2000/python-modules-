@@ -1,21 +1,17 @@
 import sys
 
 
-def is_number_float(char: any) -> bool:
-    for c in char:
-        if not '0' <= c <= '9' and c != '.':
-            return False
-    return True
+def is_number(inp: any) -> bool:
+    """checks if number"""
+    try:
+        int(inp)
+        return True
+    except Exception:
+        return False
 
 
-def is_number(char: any) -> bool:
-    for c in char:
-        if not '0' <= c <= '9':
-            return False
-    return True
-
-
-def search(arg: str) -> True:
+def search(arg: str) -> bool:
+    """looking for ':' and how many repeatitions"""
     _ = False
     counter = 0
     for c in arg:
@@ -30,7 +26,7 @@ def search(arg: str) -> True:
 
 
 def most_abundant(items: dict) -> tuple:
-
+    """looking for most aboundant item """
     most = list(items.items())[0]
     contity = list(items.values())[0]
     for i in items.items():
@@ -41,7 +37,7 @@ def most_abundant(items: dict) -> tuple:
 
 
 def least_abundant(items: dict) -> tuple:
-
+    """looking for least aboundant item"""
     least = list(items.items())[0]
     contity = list(items.values())[0]
     for i in items.items():
@@ -52,6 +48,7 @@ def least_abundant(items: dict) -> tuple:
 
 
 def find_moderate(items: dict, middle: int) -> dict:
+    """looking for moderate items"""
     moderate = {}
     for i in items.items():
         if i[1] > middle:
@@ -60,6 +57,7 @@ def find_moderate(items: dict, middle: int) -> dict:
 
 
 def find_scarce(items: dict, middle: int) -> dict:
+    """looking for scarce items"""
     scarce = {}
     for i in items.items():
         if i[1] <= middle:
@@ -68,6 +66,7 @@ def find_scarce(items: dict, middle: int) -> dict:
 
 
 def find_restock_needed(items: dict) -> list:
+    """find item that needs restock"""
     target = []
     for i in items.items():
         if i[1] <= 1:
@@ -76,7 +75,7 @@ def find_restock_needed(items: dict) -> list:
 
 
 def parsing() -> dict:
-
+    """pars arguments and return clean data as a dictionary"""
     args = sys.argv
     args_count = len(args) - 1
 
@@ -87,8 +86,14 @@ def parsing() -> dict:
 
     data = dict(
         items={},
-        most=None,
-        least=None,
+        most={
+            'name': None,
+            'contity': 0
+        },
+        least={
+            'name': None,
+            'contity': 0
+        },
         moderate={},
         scare={},
         restock_neaded=[],
@@ -102,16 +107,13 @@ def parsing() -> dict:
             print("given units must be in this form <unit:unit_count> <...>")
             return None
 
-        # check types
+        # split and check type
         part_1 = ""
         i = 0
         while arg[i] != ':':
             part_1 += arg[i]
             i += 1
 
-        if is_number_float(part_1):
-            print("unit name must not be an integer !")
-            return None
         i += 1
         part_2 = ""
         while i < len(arg):
@@ -121,12 +123,14 @@ def parsing() -> dict:
         if is_number(part_2) is False:
             print("unit count must be integer!")
             return None
+
         data["items"].update({part_1: int(part_2)})
 
     return data
 
 
 def analyse(data: dict) -> None:
+    """analyse data by seting values"""
 
     items = data["items"]
 
@@ -134,21 +138,23 @@ def analyse(data: dict) -> None:
     total = 0
     for i in items.values():
         total += i
+    data["total"] = total
 
     # finding unique count
     unique = set()
     for i in items.keys():
         unique.add(i)
-    data["total"] = total
     data["unique"] = len(unique)
 
     # finding most
     most = most_abundant(items)
-    data["most"] = most
+    data["most"].update({'name': most[0]})
+    data["most"].update({'contity': most[1]})
 
     # finding least
     least = least_abundant(items)
-    data["least"] = least
+    data["least"].update({'name': least[0]})
+    data["least"].update({'contity': least[1]})
 
     # finding moderate
     print()
@@ -165,8 +171,8 @@ def analyse(data: dict) -> None:
     data["restock_needed"] = restock_needed
 
 
-def show_stats(data) -> None:
-
+def show_stats(data: dict) -> None:
+    """show statictics"""
     print("=== Inventory System Analysis ===")
     print(f"Total items in inventory: {data['total']}")
     print(f"Unique item types: {data['unique']}")
@@ -181,18 +187,20 @@ def show_stats(data) -> None:
 
     print("\n=== Inventory Statistics ===")
 
-    print(f"Most abundant: {data['most'][0]} ({data['most'][1]} "
-          f"{'units' if data['most'][1] > 1 else 'unit'})")
+    print(f"Most abundant: {data['most']['name']} ({data['most']['contity']} "
+          f"{'units' if data['most']['contity'] > 1 else 'unit'})")
 
-    print(f"Least abundant: {data['least'][0]} ({data['least'][1]} "
-          f"{'units' if data['least'][1] > 1 else 'unit'})")
+    print(f"Least abundant: {data['least']['name']} "
+          f"({data['least']['contity']} "
+          f"{'units' if data['least']['contity'] > 1 else 'unit'})")
 
     print("\n=== Item Categories ===")
     print(f"Moderate: {data['moderate']}")
     print(f"Scarce: {data['scarce']}")
 
-    print("\n=== Management Suggestions ===")
-    print(f"Restock needed: {data['restock_needed']}")
+    if data['restock_needed']:
+        print("\n=== Management Suggestions ===")
+        print(f"Restock needed: {data['restock_needed']}")
 
     print("\n=== Dictionary Properties Demo ===")
     keys = list(items.keys())
@@ -202,12 +210,15 @@ def show_stats(data) -> None:
     print(f"Dictionary values: {values}")
 
     sample = "sword"
-    lookup = sample in keys
+    lookup = True if data['items'].get(sample, False) else False
     print(f"Sample lookup - '{sample}' in inventory: {lookup}")
 
 
 if __name__ == "__main__":
-    data = parsing()
-    if data:
-        analyse(data)
-        show_stats(data)
+    try:
+        data = parsing()
+        if data:
+            analyse(data)
+            show_stats(data)
+    except Exception as e:
+        print(f"Error : {e}")

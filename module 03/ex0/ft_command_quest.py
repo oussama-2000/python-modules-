@@ -2,6 +2,7 @@ import sys
 
 
 def program() -> None:
+    """command interpreter"""
     print("=== Command Quest ===")
 
     arguments = sys.argv
@@ -26,4 +27,7 @@ def program() -> None:
 
 
 if __name__ == "__main__":
-    program()
+    try:
+        program()
+    except Exception as e:
+        print(f"Error : {e}")

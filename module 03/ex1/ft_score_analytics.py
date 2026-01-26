@@ -44,9 +44,11 @@ def analyse(scors: list) -> None:
 
 
 if __name__ == "__main__":
-
-    print("=== Player Score Analytics ===")
-    result = parsing()
-    if result:
-        analyse(result)
-    print()
+    try:
+        print("=== Player Score Analytics ===")
+        result = parsing()
+        if result:
+            analyse(result)
+        print()
+    except Exception as e:
+        print(f"Error : {e}")
