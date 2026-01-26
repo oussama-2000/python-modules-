@@ -13,7 +13,7 @@ def analyes() -> dict:
     data = {
         'players': [
             {
-                "name": "alice",
+                "name": "zlice",
                 "achi": {'first_kill', 'level_10', 'treasure_hunter',
                          'speed_demon'
                          },
@@ -76,8 +76,6 @@ def analyes() -> dict:
         else:
             data['score_categories']['low'] += [player['name']]
 
-    print(f"High scorers (>2000): {data['score_categories']['high']}")
-
     # find doubled scores
     scores = []
     for player in data['players']:
@@ -123,13 +121,14 @@ def analyes() -> dict:
 def show_stats(data: dict) -> None:
     print("=== Game Analytics Dashboard ===\n")
     print("=== List Comprehension Examples ===")
-    print(f"High scorers (>2000): {data['score_categories']['high']}\n"
+    print(f"High scorers (>2000): {sorted(data['score_categories']['high'])}\n"
           f"Scores doubled: {data['scores_doubled']}\n"
-          f"Active players: {data['active_players']}")
+          f"Active players: {sorted(data['active_players'])}")
 
     print("\n=== Dict Comprehension Examples ===")
     print("Player scores: {", end="")
     i = 1
+    
     for player in data['players']:
         print(f"'{player['name']}': {player['score']}"
               f"{', ' if i < len(data['players']) else ''}", end="")
