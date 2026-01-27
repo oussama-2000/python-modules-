@@ -2,6 +2,7 @@
 
 def achi_tracker() -> tuple:
     """shows players achievements"""
+
     print("=== Achievement Tracker System ===\n")
     player_1 = {
         "name": "Alice",
@@ -26,6 +27,7 @@ def achi_tracker() -> tuple:
 
 def achi_analyse(players: tuple) -> None:
     """analyse achievement statictics """
+
     print("\n=== Achievement Analytics ===")
     player_1, player_2, player_3 = players
 

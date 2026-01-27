@@ -123,7 +123,6 @@ def parsing() -> dict:
         if is_number(part_2) is False:
             print("unit count must be integer!")
             return None
-
         data["items"].update({part_1: int(part_2)})
 
     return data
@@ -181,9 +180,10 @@ def show_stats(data: dict) -> None:
 
     items = data['items']
     for i in items.items():
-        percentage = (i[1] / data['total']) * 100
-        print(f"{i[0]}: {i[1]} {'units' if i[1] > 1 else 'unit'} "
-              f"({percentage:.1f}%)")
+        if data['total'] != 0:
+            percentage = (i[1] / data['total']) * 100
+            print(f"{i[0]}: {i[1]} {'units' if i[1] > 1 else 'unit'} "
+                  f"({percentage:.1f}%)")
 
     print("\n=== Inventory Statistics ===")
 
@@ -210,8 +210,8 @@ def show_stats(data: dict) -> None:
     print(f"Dictionary values: {values}")
 
     sample = "sword"
-    lookup = True if data['items'].get(sample, False) else False
-    print(f"Sample lookup - '{sample}' in inventory: {lookup}")
+    exsists = True if data['items'].get(sample, False) else False
+    print(f"Sample lookup - '{sample}' in inventory: {exsists}")
 
 
 if __name__ == "__main__":

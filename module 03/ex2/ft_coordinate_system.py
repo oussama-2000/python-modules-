@@ -2,6 +2,7 @@ import math
 
 
 def len_counter(string: str) -> int:
+    """lenght counter"""
     if not string:
         return 0
     length = 0
@@ -10,12 +11,31 @@ def len_counter(string: str) -> int:
     return length
 
 
-def parsing(args: str = None, message: bool = True) -> tuple:
+def create_position(args: str) -> tuple:
+    """position creation"""
+    try:
+        if not args:
+            raise TypeError("no argument given !")
+        coords = args.split(",")
+        result = []
+        for c in coords:
+            result += [int(c)]
+        result = tuple(result)
+        if len_counter(result) != 3:
+            raise ValueError("coordinates must be 3 dimensions(x,y,z)")
+    except (ValueError, TypeError) as e:
+        print(f"Error when creating position: {e}")
+    else:
+        print(f"Position created: {result}")
+        return result
+
+
+def parsing(args: str) -> tuple:
     """parsing args to make clean coordinates tuple"""
 
     try:
         if not args:
-            raise TypeError("no coordinates given")
+            raise TypeError("no argument given !")
         coords = args.split(",")
         result = []
         for c in coords:
@@ -28,9 +48,8 @@ def parsing(args: str = None, message: bool = True) -> tuple:
         print(f"Error parsing coordinates: {e}")
         print(f"Error details - Type: {e.__class__.__name__}, Args: {e.args}")
     else:
-        if message:
-            print(f"Parsing coordinates: \"{args}\"")
-            print(f"Parsed position: {result}")
+        print(f"Parsing coordinates: \"{args}\"")
+        print(f"Parsed position: {result}")
         return result
 
 
@@ -61,9 +80,8 @@ if __name__ == "__main__":
         print("=== Game Coordinate System ===\n")
 
         # test1
-        coordinates_1 = parsing("10, 20, 5", False)
+        coordinates_1 = create_position("10, 20, 5")
         if coordinates_1:
-            print(f"Position created: {coordinates_1}")
             calculate_distance(coordinates_1)
 
         print()

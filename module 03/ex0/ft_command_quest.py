@@ -7,7 +7,8 @@ def program() -> None:
 
     arguments = sys.argv
     arguments_count = len(arguments)
-
+    if not arguments:
+        return None
     if arguments_count == 1:
         print("No arguments provided!")
 
@@ -27,7 +28,4 @@ def program() -> None:
 
 
 if __name__ == "__main__":
-    try:
-        program()
-    except Exception as e:
-        print(f"Error : {e}")
+    program()

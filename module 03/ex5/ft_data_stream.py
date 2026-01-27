@@ -131,4 +131,4 @@ if __name__ == "__main__":
     try:
         demo()
     except Exception as e:
-        print(e)
+        print(f"Error: {e}")
