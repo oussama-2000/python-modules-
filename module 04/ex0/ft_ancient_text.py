@@ -1,19 +1,22 @@
 
 
-def reader() -> None:
+def text_recovery() -> None:
     print("=== CYBER ARCHIVES - DATA RECOVERY SYSTEM ===\n")
-    file = "ancient_fragment.txt"
-    print(f"Accessing Storage Vault: {file}")
+    filename = "ancient_fragment.txt"
+    print(f"Accessing Storage Vault: {filename}")
     try:
-        with open(file, "r") as file:
-            print("Connection established...\n")
-            print("RECOVERED DATA:")
-            print(file.read())
+        file = open(filename, "r")
+        print("Connection established...\n")
+        print("RECOVERED DATA:")
+        print(file.read())
+        file.close()
     except FileNotFoundError:
         print("ERROR: Storage Value Not Found")
+    except PermissionError:
+        print("ERROR: access deny")
     else:
         print("\nData recovery complete. Storage unit disconnected.")
 
 
 if __name__ == "__main__":
-    reader()
+    text_recovery()
