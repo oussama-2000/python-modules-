@@ -1,10 +1,10 @@
-from typing import Any, List, Optional
+from typing import Any, List
 from abc import ABC, abstractmethod
 
 
 class DataProcessor(ABC):
     def __init__(self) -> None:
-        pass
+        self.show = True
 
     @abstractmethod
     def process(self, data: Any) -> str:
@@ -22,15 +22,16 @@ class NumericProcessor(DataProcessor):
     def __init__(self) -> None:
         super().__init__()
 
-    def process(self, data: Any, show: bool) -> str:
-        if show:
+    def process(self, data: Any) -> str:
+        if self.show:
+            print("Initializing Numeric Processor...")
             print(f"Processing data: {data}")
 
         validation = self.validate(data)
         if not validation:
             print("Validation: Numeric data not verified")
             return (self.format_output("Invalid numeric data"))
-        if show:
+        if self.show:
             print("Validation: Numeric data verified")
 
         length = len(data)
@@ -39,9 +40,9 @@ class NumericProcessor(DataProcessor):
             avg = summ / length
         else:
             avg = 0
-        result =  (f"Processed {length} numeric values"
-                    f",sum={summ}, avg={avg}")
-        if show:
+        result = (f"Processed {length} numeric values"
+                  f",sum={summ}, avg={avg}")
+        if self.show:
             print(f"Output: {self.format_output(result)}")
         else:
             print(self.format_output(result))
@@ -64,26 +65,26 @@ class TextProcessor(DataProcessor):
     def __init__(self) -> None:
         super().__init__()
 
-    def process(self, data: Any, show: bool) -> str:
-        if show:
+    def process(self, data: Any) -> str:
+        if self.show:
+            print("Initializing Numeric Processor...")
             print(f"Processing data: \"{data}\"")
 
         validation = self.validate(data)
         if not validation:
             print("Validation: Text data not verified")
             return self.format_output("Invalid text data")
-        if show:
+        if self.show:
             print("Validation: Text data verified")
 
         characters_count = len(data)
         words_count = len(data.split(" "))
         result = (f"Processed text {characters_count} characters"
-                    f", {words_count} words")
-        if show:
+                  f", {words_count} words")
+        if self.show:
             print(f"Output: {self.format_output(result)}")
         else:
             print(self.format_output(result))
-
 
         return f"Output: {self.format_output(result)}"
 
@@ -100,15 +101,16 @@ class LogProcessor(DataProcessor):
     def __init__(self) -> None:
         super().__init__()
 
-    def process(self, data: Any, show: bool) -> str:
-        if show:
+    def process(self, data: Any) -> str:
+        if self.show:
+            print("Initializing Numeric Processor...")
             print(f"Processing data: \"{data}\"")
 
         validation = self.validate(data)
         if not validation:
             print("Validation: Log entry not verified")
             return self.format_output("Invalid log data")
-        if show:
+        if self.show:
             print("Validation: Log entry verified")
 
         log = data.split(":")
@@ -116,8 +118,8 @@ class LogProcessor(DataProcessor):
         log_message = log[1]
 
         result = (f"[ALERT] {log_type} level detected:"
-                    f"{log_message}")
-        if show:
+                  f"{log_message}")
+        if self.show:
             print(f"Output: {self.format_output(result)}")
         else:
             print(self.format_output(result))
@@ -136,40 +138,40 @@ class LogProcessor(DataProcessor):
     def format_output(self, result: str) -> str:
         return result
 
+
 if __name__ == "__main__":
-    print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===")
+    print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===\n")
 
-    print("Initializing Numeric Processor...")
-    num = NumericProcessor()
-    result = num.process([1, 2, 3, 4, 5], True)
-
-    print()
-    print("Initializing Text Processor...")
-    text = TextProcessor()
-    result = text.process("Hello Nexus World", True)
+    num: DataProcessor = NumericProcessor()
+    num.process(3)
 
     print()
-    print("Initializing Log Processor...")
-    log = LogProcessor()
-    log.process("ERROR: Connection timeout", True)
+    text: DataProcessor = TextProcessor()
+    text.process("Hello Nexus World")
 
     print()
-    print("=== Polymorphic Processing Demo ===")
+    log: DataProcessor = LogProcessor()
+    log.process("ERROR: Connection timeout")
+
+    print()
+    print("=== Polymorphic Processing Demo ===\n")
     processors: List[DataProcessor] = [
         NumericProcessor(),
         TextProcessor(),
         LogProcessor()
     ]
-    data : List[Any] = [
+    for instance in processors:
+        instance.show = False
+
+    data: List[Any] = [
         [2, 2, 2],
         "aaaaaa aaaaa",
         "INFO: System ready"
     ]
-    i = 0
+    i: int = 0
     for processor in processors:
         print(f"Result {i + 1}: ", end="")
-        processor.process(data[i], False)
+        processor.process(data[i])
         i += 1
 
     print("\nFoundation systems online. Nexus ready for advanced streams.")
-
