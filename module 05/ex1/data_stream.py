@@ -44,6 +44,15 @@ class SensorStream(DataStream):
             return "invalid"
 
         try:
+            for i in data_batch:
+                if len(i.split(":")) != 2:
+                    raise ValueError
+                name, value = i.split(":")
+                if not name or not value:
+                    raise ValueError
+                if name.isspace() or value.isspace():
+                    raise ValueError
+
             temps = [
                 float(item.split(":")[1])
                 for item in data_batch
@@ -54,15 +63,15 @@ class SensorStream(DataStream):
 
             avg_temp = sum(temps) / len(temps) if temps else 0
             if self.show:
-                print(f"Sensor analysis: {len(data_batch)} readings processed, "
-                      f"avg temp: {avg_temp}°C")
+                print(f"Sensor analysis: {len(data_batch)} readings processed,"
+                      f" avg temp: {avg_temp}°C")
 
             return (f"Sensor analysis: {len(data_batch)} readings processed, "
                     f"avg temp: {avg_temp}°C")
 
         except Exception:
             print("Error: Sensor processing failed")
-            return "Error: Sensor processing failed"
+            return "invalid"
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
         return {
@@ -83,6 +92,14 @@ class TransactionStream(DataStream):
             return "invalid"
 
         try:
+            for i in data_batch:
+                if len(i.split(":")) != 2:
+                    raise ValueError
+                name, value = i.split(":")
+                if not name or not value:
+                    raise ValueError
+                if name.isspace() or value.isspace():
+                    raise ValueError
             bought = 0
             sold = 0
             for item in data_batch:
@@ -105,7 +122,7 @@ class TransactionStream(DataStream):
 
         except Exception:
             print("Error: Transaction processing failed")
-            return "Error: Transaction processing failed"
+            return "invalid"
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
         return {
@@ -126,6 +143,11 @@ class EventStream(DataStream):
             return "invalid"
 
         try:
+            for event in data_batch:
+                if not isinstance(event, str):
+                    raise ValueError
+                if not event or event.isspace():
+                    raise ValueError
             errors = [
                 event for event in data_batch
                 if isinstance(event, str) and "error" in event.lower()
@@ -141,7 +163,7 @@ class EventStream(DataStream):
 
         except Exception:
             print("Error: Event processing failed")
-            return "Error: Event processing failed"
+            return "invalid"
 
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
         return {
@@ -204,7 +226,7 @@ if __name__ == "__main__":
     transaction.process_batch(["buy:100", "sell:150", "buy:75"])
 
     print()
-    event = EventStream(" EVENT_001")
+    event = EventStream("EVENT_001")
     event.process_batch(["login", "error", "logout"])
 
     print("\n=== Polymorphic Stream Processing ===")
