@@ -192,9 +192,6 @@ def main() -> None:
         i += 1
 
     print("\nFoundation systems online. Nexus ready for advanced streams.")
-    # _: Union[Dict, List] = {}
-
-    return None
 
 
 if __name__ == "__main__":
