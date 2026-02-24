@@ -18,6 +18,18 @@ class SpellCard(Card):
                  ) -> None:
         super().__init__(name, cost, rarity)
         self.effect_type = effect_type
+        self.effect = None
+
+        if not isinstance(name, str) or not name:
+            raise ValueError("Invalid SpellCard Name Type")
+        if not isinstance(cost, int):
+            raise ValueError("Invalid SpellCard Cost Type")
+        if not isinstance(rarity, str) or not rarity:
+            raise ValueError("Invalid SpellCard Rarity Type")
+        valid_effects_type = [e.value for e in EffectType]
+        if not isinstance(effect_type, str) or\
+                effect_type.lower() not in valid_effects_type:
+            raise ValueError("Invalid SpellCard Effect Type")
 
     def play(self, game_state: Dict) -> Dict:
         if not isinstance(game_state, Dict):
@@ -31,8 +43,15 @@ class SpellCard(Card):
         return ({
             'card_played': game_state['name'],
             'mana_used': game_state['cost'],
-            'effect': 'Deal 3 damage to target'
+            'effect': self.effect
         })
 
     def resolve_effect(self, targets: List) -> Dict:
-        pass
+        if not isinstance(targets, List):
+            raise ValueError("Invalid Targets for resolving Spell Card Effect")
+        if len(targets) == 0:
+            raise ValueError("Invalid Targets for resolving Spell Card Effect")
+        self.effect = f'Deal {len(targets)} damage to target'
+        return ({
+            'effect': self.effect
+        })

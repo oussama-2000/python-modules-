@@ -14,11 +14,11 @@ class CreatureCard(Card):
         self.attack = attack
         self.health = health
 
-        if not isinstance(name, str):
+        if not isinstance(name, str) or not name:
             raise ValueError("Card name Type is Invalid")
         if not isinstance(cost, int):
             raise ValueError("Cost Type is Invalid")
-        if not isinstance(rarity, str):
+        if not isinstance(rarity, str) or not rarity:
             raise ValueError("Rarity Type is Invalid")
         if not isinstance(attack, int):
             raise ValueError("Attack Type is Invalid")

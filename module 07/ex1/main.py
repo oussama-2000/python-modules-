@@ -8,39 +8,54 @@ from typing import List
 
 if __name__ == "__main__":
 
-    print("\n=== DataDeck Deck Builder ===\n")
+    try:
+        print("\n=== DataDeck Deck Builder ===\n")
 
-    print("Building deck with different card types...")
+        print("Building deck with different card types...")
 
-    spell = SpellCard("Lightning Bolt", 3, "rare", "damage")
-    creature = CreatureCard("Fire Dragon", 5, "legendary", 5, 6)
-    artifact = ArtifactCard("Mana Crystal", 2, "rare", 7,
-                            "Permanent: +1 mana per turn")
+        spell = SpellCard("Lightning Bolt", 3, "rare", "damage")
+        creature = CreatureCard("Fire Dragon", 5, "legendary", 5, 6)
+        artifact = ArtifactCard("Mana Crystal", 2, "rare", 7,
+                                "Permanent: +1 mana per turn")
+        test_card = SpellCard("test_card", 3, "rare", "damage")
 
-    cards: List[Card] = spell, artifact, creature
-    deck = Deck()
+        cards: List[Card] = [spell, artifact, creature, test_card]
 
-    for card in cards:
-        deck.add_card(card)
+        # aplicate each type magic
+        spell.resolve_effect([spell, artifact, creature])  # to set effect
+        artifact.activate_ability()
 
-    print(f"Deck stats: {deck.get_deck_stats()}")
+        deck = Deck()
 
-    print("\nDrawing and playing cards\n")
+        for card in cards:
+            deck.add_card(card)
 
-    drew1 = deck.draw_card()
-    print(f"Drew: {drew1.name} "
-          f"({drew1.__class__.__name__})")
+        deck.remove_card("test_card")  # just to demonstrate remove_card()
+        print(f"Deck stats: {deck.get_deck_stats()}")
 
-    print(f"Play result: {drew1.play(drew1.get_card_info())}")
+        deck.shuffle()
 
-    print()
-    drew2 = deck.draw_card()
-    print(f"Drew: {drew2.name} ({drew2.__class__.__name__})")
+        print("\nDrawing and playing cards\n")
 
-    print(f"Play result: {drew2.play(drew2.get_card_info())}")
+        drew1 = deck.draw_card()
+        print(f"Drew: {drew1.name} "
+              f"({drew1.__class__.__name__})")
 
-    print()
-    drew2 = deck.draw_card()
-    print(f"Drew: {drew2.name} ({drew2.__class__.__name__})")
+        print(f"Play result: {drew1.play(drew1.get_card_info())}")
 
-    print(f"Play result: {drew2.play(drew2.get_card_info())}")
+        print()
+        drew2 = deck.draw_card()
+        print(f"Drew: {drew2.name} ({drew2.__class__.__name__})")
+
+        print(f"Play result: {drew2.play(drew2.get_card_info())}")
+
+        print()
+        drew2 = deck.draw_card()
+        print(f"Drew: {drew2.name} ({drew2.__class__.__name__})")
+
+        print(f"Play result: {drew2.play(drew2.get_card_info())}")
+
+        print("\nPolymorphism in action: "
+              "Same interface, different card behaviors!")
+    except ValueError as e:
+        print(f"Error: {e}")

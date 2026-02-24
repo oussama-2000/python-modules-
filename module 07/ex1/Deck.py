@@ -11,9 +11,13 @@ class Deck():
         self.cards: List[Card] = []
 
     def add_card(self, card: Card) -> None:
+        if not isinstance(card, Card):
+            raise ValueError("Invalid Card Type For Filling The Deck")
         self.cards.append(card)
 
     def remove_card(self, card_name: str) -> bool:
+        if not isinstance(card_name, str) or not card_name:
+            raise ValueError("Invalid Card Type For Removing It From The Deck")
         for card in self.cards:
             if card.name == card_name:
                 self.cards.remove(card)
@@ -21,10 +25,12 @@ class Deck():
         return False
 
     def shuffle(self) -> None:
+        if len(self.cards) == 0:
+            raise ValueError("No Cards To shuffle")
         random.shuffle(self.cards)
 
     def draw_card(self) -> Card:
-        if not self.cards:
+        if len(self.cards) == 0:
             raise ValueError("Cannot draw from an empty deck")
         return self.cards.pop(0)
 
@@ -33,7 +39,8 @@ class Deck():
         creatures_count = 0
         spells_count = 0
         artifacts_count = 0
-
+        if len(self.cards) == 0:
+            raise ValueError("No Cards In The Deck")
         for card in self.cards:
             if isinstance(card, CreatureCard):
                 creatures_count += 1
