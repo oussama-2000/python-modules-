@@ -47,6 +47,7 @@ class SpellCard(Card):
         })
 
     def resolve_effect(self, targets: List) -> Dict:
+        """to set effect"""
         if not isinstance(targets, List):
             raise ValueError("Invalid Targets for resolving Spell Card Effect")
         if len(targets) == 0:

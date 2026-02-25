@@ -9,8 +9,8 @@ class ArtifactCard(Card):
                  rarity: str, durability: int,
                  effect: str) -> None:
         super().__init__(name, cost, rarity)
-        self.durability = durability
-        self.effect = effect
+        self.durability: int = durability
+        self.effect: str = effect
 
         if not isinstance(name, str) or not name:
             raise ValueError("Invalid ArtifactCard Name Type")

@@ -1,4 +1,5 @@
 from ex0.CreatureCard import CreatureCard
+from typing import Dict
 
 if __name__ == "__main__":
     try:
@@ -12,21 +13,21 @@ if __name__ == "__main__":
             )
 
         print("CreatureCard Info:")
-        info = card.get_card_info()
+        info: Dict = card.get_card_info()
         print(info)
 
-        mana = 6
+        mana: int = 6
         print(f"\nPlaying Fire Dragon with {mana} mana available:")
 
         print(f"Playable: {card.is_playable(mana)}")
 
-        play_result = card.play(info)
+        play_result: Dict = card.play(info)
         print("Play result: ", end="")
         print(play_result)
 
         print(f"\n{card.name} attacks Goblin Warrior:")
         print("Attack result:", end="")
-        combat = card.attack_target("Goblin Warrior")
+        combat: Dict = card.attack_target("Goblin Warrior")
         print(combat)
 
         print("\nTesting insufficient mana (3 available):")

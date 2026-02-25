@@ -11,8 +11,8 @@ class CreatureCard(Card):
                  health: int
                  ) -> None:
         super().__init__(name, cost, rarity)
-        self.attack = attack
-        self.health = health
+        self.attack: int = attack
+        self.health: int = health
 
         if not isinstance(name, str) or not name:
             raise ValueError("Card name Type is Invalid")

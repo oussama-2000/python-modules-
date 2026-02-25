@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict
+from typing import Dict, List
 from enum import Enum
 
 
@@ -12,9 +12,16 @@ class Rarity(Enum):
 
 class Card(ABC):
     def __init__(self, name: str, cost: int, rarity: str) -> None:
-        self.name = name
-        self.cost = cost
-        valid_rarity = [r.value for r in Rarity]
+        self.name: str = name
+        self.cost: int = cost
+
+        if not isinstance(name, str) or not name:
+            raise ValueError("Invalid Card name")
+        if not isinstance(cost, int):
+            raise ValueError("Invalid Card Cost")
+        if not isinstance(rarity, str):
+            raise ValueError("Invalid Card Rarity")
+        valid_rarity: List = [r.value for r in Rarity]
         if rarity.lower() not in valid_rarity:
             raise ValueError("Invalid rarity")
         self.rarity = rarity

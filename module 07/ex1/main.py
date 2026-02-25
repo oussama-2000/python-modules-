@@ -13,16 +13,16 @@ if __name__ == "__main__":
 
         print("Building deck with different card types...")
 
-        spell = SpellCard("Lightning Bolt", 3, "rare", "damage")
-        creature = CreatureCard("Fire Dragon", 5, "legendary", 5, 6)
-        artifact = ArtifactCard("Mana Crystal", 2, "rare", 7,
-                                "Permanent: +1 mana per turn")
-        test_card = SpellCard("test_card", 3, "rare", "damage")
+        spell: Card = SpellCard("Lightning Bolt", 3, "rare", "damage")
+        creature: Card = CreatureCard("Fire Dragon", 5, "legendary", 5, 6)
+        artifact: Card = ArtifactCard("Mana Crystal", 2, "rare", 7,
+                                      "Permanent: +1 mana per turn")
+        test_card: Card = SpellCard("test_card", 3, "rare", "damage")
 
         cards: List[Card] = [spell, artifact, creature, test_card]
 
         # aplicate each type magic
-        spell.resolve_effect([spell, artifact, creature])  # to set effect
+        spell.resolve_effect([spell, artifact, creature])
         artifact.activate_ability()
 
         deck = Deck()
@@ -38,22 +38,46 @@ if __name__ == "__main__":
         print("\nDrawing and playing cards\n")
 
         drew1 = deck.draw_card()
-        print(f"Drew: {drew1.name} "
-              f"({drew1.__class__.__name__})")
+        card_name = None
+
+        if drew1.__class__.__name__ == 'CreatureCard':
+            card_name = "Creature"
+        elif drew1.__class__.__name__ == "SpellCard":
+            card_name = "Spell"
+        elif drew1.__class__.__name__ == "ArtifactCard":
+            card_name = "Artifact"
+
+        print(f"Drew: {drew1.name} ({card_name})")
 
         print(f"Play result: {drew1.play(drew1.get_card_info())}")
 
         print()
         drew2 = deck.draw_card()
-        print(f"Drew: {drew2.name} ({drew2.__class__.__name__})")
+
+        if drew2.__class__.__name__ == 'CreatureCard':
+            card_name = "Creature"
+        elif drew2.__class__.__name__ == "SpellCard":
+            card_name = "Spell"
+        elif drew2.__class__.__name__ == "ArtifactCard":
+            card_name = "Artifact"
+
+        print(f"Drew: {drew2.name} ({card_name})")
 
         print(f"Play result: {drew2.play(drew2.get_card_info())}")
 
         print()
-        drew2 = deck.draw_card()
-        print(f"Drew: {drew2.name} ({drew2.__class__.__name__})")
+        drew3 = deck.draw_card()
 
-        print(f"Play result: {drew2.play(drew2.get_card_info())}")
+        if drew3.__class__.__name__ == 'CreatureCard':
+            card_name = "Creature"
+        elif drew3.__class__.__name__ == "SpellCard":
+            card_name = "Spell"
+        elif drew3.__class__.__name__ == "ArtifactCard":
+            card_name = "Artifact"
+
+        print(f"Drew: {drew3.name} ({card_name})")
+
+        print(f"Play result: {drew3.play(drew3.get_card_info())}")
 
         print("\nPolymorphism in action: "
               "Same interface, different card behaviors!")
