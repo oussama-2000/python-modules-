@@ -6,6 +6,10 @@ class GameStrategy(ABC):
 
     @abstractmethod
     def execute_turn(self, hand: List, battlefield: List) -> Dict:
+        """
+        hand: list of cards
+        battlefield : list of creatures already in play
+        """
         pass
 
     @abstractmethod
@@ -14,4 +18,5 @@ class GameStrategy(ABC):
 
     @abstractmethod
     def prioritize_targets(self, available_targets: List) -> List:
+        """get the weakeast target"""
         pass

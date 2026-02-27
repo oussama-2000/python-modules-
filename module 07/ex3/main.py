@@ -1,6 +1,7 @@
-from ex3.CardFactory import CardFactory
+
 from ex3.FantasyCardFactory import FantasyCardFactory
 from ex3.AggressiveStrategy import AggressiveStrategy
+
 
 if __name__ == "__main__":
     print("\n=== DataDeck Game Engine ===\n")
@@ -14,3 +15,22 @@ if __name__ == "__main__":
 
     print(f"Available types: {available_types}")
 
+    print("\nSimulating aggressive turn...")
+    hand = [
+        factory.create_creature("dragon"),
+        factory.create_creature("goblin"),
+        factory.create_artifact("Bolt")
+        ]
+
+    print("Hand:", [f"{card.name} ({card.cost})" for card in hand])
+
+    print("Turn execution:")
+    aggressive = AggressiveStrategy()
+    print(f"Strategy: {aggressive.get_strategy_name()}")
+
+    actions = aggressive.execute_turn(hand, [])
+
+    print(f"Actions: {actions}")
+
+    print("\nGame Report:")
+    

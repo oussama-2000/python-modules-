@@ -13,7 +13,7 @@ class FantasyCardFactory(CardFactory):
     def create_creature(self, name_or_power: str | int | None = None) -> Card:
         creatures = {
             "dragon": ("Fire Dragon", 5, "Legendary", 7, 5),
-            "goblin": ("Goblin Warrior", 2, "Common", 2, 2)
+            "goblin": ("Goblin Warrior", 2, "Common", 2, 2),
         }
 
         if isinstance(name_or_power, str) and\
@@ -27,7 +27,7 @@ class FantasyCardFactory(CardFactory):
     def create_spell(self, name_or_power: str | int | None = None) -> Card:
         spells = {
             "fireball": ("Fireball", 3, "Rare", "damage"),
-            "heal": ("Healing Light", 2, "Common", "heal"),
+            "heal": ("Healing Light", 2, "Common", "heal")
         }
 
         if isinstance(name_or_power, str) and name_or_power.lower() in spells:
@@ -43,6 +43,8 @@ class FantasyCardFactory(CardFactory):
                           "Permanent: +1 mana per turn"),
             "ancient_staff": ("Ancient Staff", 4, "Epic", 3,
                               "Permanent: +2 spell damage"),
+            "bolt": ("Lightning Bolt", 3, "Rare", 2,
+                     "Permanent: +3 spell damage")
         }
 
         if isinstance(name_or_power, str) and\
