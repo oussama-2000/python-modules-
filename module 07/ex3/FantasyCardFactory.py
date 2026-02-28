@@ -11,20 +11,34 @@ import random
 class FantasyCardFactory(CardFactory):
 
     def create_creature(self, name_or_power: str | int | None = None) -> Card:
-        creatures = {
-            "dragon": ("Fire Dragon", 5, "Legendary", 7, 5),
-            "goblin": ("Goblin Warrior", 2, "Common", 2, 2),
-        }
+        creatures = {}
+        if isinstance(name_or_power, str):
+            creatures = {
+                "dragon": ("Fire Dragon", 5, "Legendary", 7, 5),
+                "goblin": ("Goblin Warrior", 2, "Common", 2, 2),
+            }
+        elif isinstance(name_or_power, int):
+            creatures = {
+                7: ("Fire Dragon", 5, "Legendary", 7, 5),
+                2: ("Goblin Warrior", 2, "Common", 2, 2),
+            }
 
         if isinstance(name_or_power, str) and\
                 name_or_power.lower() in creatures:
             data = creatures[name_or_power.lower()]
             return CreatureCard(*data)
 
+        elif isinstance(name_or_power, int) and\
+                name_or_power in creatures:
+            data = creatures[name_or_power]
+            return CreatureCard(*data)
+
         data = random.choice(list(creatures.values()))
         return CreatureCard(*data)
 
     def create_spell(self, name_or_power: str | int | None = None) -> Card:
+        if isinstance(name_or_power, int):
+            raise ValueError("Spell Card has no power")
         spells = {
             "fireball": ("Fireball", 3, "Rare", "damage"),
             "heal": ("Healing Light", 2, "Common", "heal")
@@ -38,6 +52,8 @@ class FantasyCardFactory(CardFactory):
         return SpellCard(*data)
 
     def create_artifact(self, name_or_power: str | int | None = None) -> Card:
+        if isinstance(name_or_power, int):
+            raise ValueError("Artifact Card has no power")
         artifacts = {
             "mana_ring": ("Mana Ring", 2, "Rare", 5,
                           "Permanent: +1 mana per turn"),

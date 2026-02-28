@@ -1,6 +1,5 @@
 from typing import List, Dict
 from ex3.GameStrategy import GameStrategy
-from ex0.CreatureCard import CreatureCard
 
 # Play high attack creatures first
 # Attack immediately
