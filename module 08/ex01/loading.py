@@ -1,4 +1,8 @@
-import importlib
+try:
+    import importlib
+except ImportError as e:
+    print(f"Import Error {e}")
+    exit()
 
 
 def check_dependency(package_name: str) -> str:
@@ -39,14 +43,14 @@ def analyze_data() -> None:
 def create_visualization(data: object) -> None:
 
     try:
-        import matplotlib.pyplot as plt
+        import matplotlib.pyplot as p
 
         print("Generating visualization...\n")
-        plt.plot(data["time"], data["signal"])
-        plt.title("Matrix Signal Analysis")
-        plt.xlabel("Time")
-        plt.ylabel("Signal")
-        plt.savefig("matrix_analysis.png")
+        p.plot(data["time"], data["signal"])
+        p.title("Matrix Signal Analysis")
+        p.xlabel("Time")
+        p.ylabel("Signal")
+        p.savefig("matrix_analysis.png")
 
         print("Analysis complete!")
         print("Results saved to: matrix_analysis.png")

@@ -1,5 +1,8 @@
-import sys
-import site
+try:
+    import sys
+    import site
+except ImportError as e:
+    print(f"Import Error {e}")
 
 
 def check_venv_existence() -> bool:
