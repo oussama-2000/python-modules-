@@ -1,3 +1,6 @@
+import importlib
+
+
 def check_dependency(package_name: str) -> str:
 
     package_message = {
@@ -6,12 +9,13 @@ def check_dependency(package_name: str) -> str:
         "matplotlib": " Visualization ready"
     }
     try:
-        module = __import__(package_name)
+        module = importlib.import_module(package_name)
 
         return (f"[OK] {package_name} ({module.__version__})"
                 f" - {package_message[package_name]}")
     except ImportError:
-        return f"[KO] {package_name} not found"
+        return (f"[KO] {package_name} not found"
+                f" use : pip install {package_name} to install it")
 
 
 def analyze_data() -> None:
@@ -19,8 +23,8 @@ def analyze_data() -> None:
     print("Analyzing Matrix data...")
     try:
         print("Processing 1000 data points...")
-        pandas = __import__("pandas")
-        numpy = __import__("numpy")
+        pandas = importlib.import_module("pandas")
+        numpy = importlib.import_module("numpy")
         data = {
             "time": numpy.arange(1000),
             "signal": numpy.random.randn(1000)
@@ -38,7 +42,6 @@ def create_visualization(data: object) -> None:
         import matplotlib.pyplot as plt
 
         print("Generating visualization...\n")
-
         plt.plot(data["time"], data["signal"])
         plt.title("Matrix Signal Analysis")
         plt.xlabel("Time")
@@ -56,11 +59,20 @@ if __name__ == "__main__":
 
     print("\nLOADING STATUS: Loading programs...\n")
     print("Checking dependencies:")
+
     dependencies = ["pandas", "requests", "matplotlib"]
+
+    missing = False
     for dependency in dependencies:
-        print(check_dependency(dependency))
+        check_result = check_dependency(dependency)
+        print(check_result)
+        if check_result[:4] == "[KO]":
+            missing = True
 
     print()
-    analyzed_data = analyze_data()
+    if not missing:
+        analyzed_data = analyze_data()
 
-    create_visualization(analyzed_data)
+        create_visualization(analyzed_data)
+    else:
+        print("can't complete process\nsome of require packages is missing !")

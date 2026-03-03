@@ -1,0 +1,20 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[project]
+name = "ex01"
+version = "1.0.0"
+description = "blabla"
+authors = [{ name = "oussama" }]
+requires-python = ">=3.10"
+
+dependencies = [
+    "numpy<2",
+    "pandas",
+    "matplotlib",
+    "requests"
+]
+
+[tool.poetry]
+package-mode = false
