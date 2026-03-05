@@ -4,38 +4,46 @@ from datetime import datetime
 
 
 class SpaceStation(BaseModel):
+
     station_id: str = Field(
         min_length=3,
         max_length=10,
         description="station ID"
         )
+
     name: str = Field(
         min_length=1,
         max_length=50,
         description="station name"
         )
+
     crew_size: int = Field(
         ge=1,
         le=20,
         description="crew size"
         )
+
     power_level: float = Field(
         ge=0.0,
         le=100.0,
         description="power level"
         )
+
     oxygen_level: float = Field(
         ge=0.0,
         le=100.0,
         description="oxygen level"
         )
+
     last_maintenance: datetime = Field(
         description="last maintenance"
         )
+
     is_operational: bool = Field(
         default=True,
         description="if the station is operational"
         )
+
     notes: Optional[str] = Field(
         default=None,
         max_length=200,
@@ -44,6 +52,7 @@ class SpaceStation(BaseModel):
 
 
 def main() -> None:
+
     print("Space Station Data Validation")
     print("========================================")
     try:
@@ -78,8 +87,12 @@ def main() -> None:
 
         )
     except ValidationError as e:
+        print("Expected validation error:")
         print(e.errors()[0]['msg'])
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f"Unexcepted Error: {e}")

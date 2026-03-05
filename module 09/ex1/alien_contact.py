@@ -17,32 +17,44 @@ class AlienContact(BaseModel):
         max_length=15,
         description="contact ID"
         )
-    timestamp: datetime
+
+    timestamp: datetime = Field(
+        description="Contact time"
+        )
+
     location: str = Field(
         min_length=3,
         max_length=100,
         description="contact location"
         )
-    contact_type: Contact
+
+    contact_type: Contact = Field(
+        description="contact type"
+        )
+
     signal_strength: float = Field(
         ge=0.0,
         le=10.0,
         description="signal strength"
         )
+
     duration_minutes: int = Field(
         ge=1,
         le=1440,
         description="duration minutes"
         )
+
     witness_count: int = Field(
         ge=1,
         le=100,
         description="witness count"
         )
+
     message_received: Optional[str] = Field(
         max_length=500,
         description="message received"
         )
+
     is_verified: bool = Field(
         default=False,
         description="if the contact is verified"
@@ -50,21 +62,26 @@ class AlienContact(BaseModel):
 
     @model_validator(mode='after')
     def validator(self) -> "AlienContact":
+
         if not self.contact_id.startswith("AC"):
             raise ValueError("Contact ID must start with 'AC' (Alien Contact)")
+
         if self.contact_type == Contact.physical and not self.is_verified:
             raise ValueError("Physical contact reports must be verified")
+
         if self.contact_type == Contact.telepathic and self.witness_count < 3:
             raise ValueError("Telepathic contact requires at least 3 "
                              "witnesses")
-        if not self.signal_strength > 7.0 and not self.message_received:
+
+        if self.signal_strength > 7.0 and not self.message_received:
             raise ValueError("Strong signals (> 7.0) should include received "
                              "messages")
 
         return self
 
 
-if __name__ == "__main__":
+def main() -> None:
+
     print("Alien Contact Log Validation")
     print("======================================")
     try:
@@ -102,5 +119,13 @@ if __name__ == "__main__":
             message_received="Greetings from Zeta Reticuli",
             is_verified=True
         )
+
     except ValidationError as e:
-        print(f"Expected validation error:\n{e.errors()[0]['msg'][13:]}")
+        print(f"Expected validation error:\n{e.errors()[0]['msg']}")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        print(f"Unexcepted Error: {e}")

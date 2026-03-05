@@ -18,31 +18,37 @@ class SpaceMission(BaseModel):
         max_length=15,
         description="mission ID"
         )
+
     mission_name: str = Field(
         min_length=3,
         max_length=100,
         description="mission name"
         )
+
     destination: str = Field(
         min_length=3,
         max_length=50,
         description="mission destination"
         )
+
     launch_date: datetime
     duration_days: int = Field(
         ge=1,
         le=3560,
         description="mission duration days"
         )
+
     crew: List["CrewMember"] = Field(
         min_length=1,
         max_length=12,
         description="mission members"
         )
+
     mission_status: str = Field(
         default="planned",
         description="mission status"
         )
+
     budget_millions: float = Field(
         ge=1.0,
         le=10000.0,
@@ -55,27 +61,32 @@ class SpaceMission(BaseModel):
             max_length=10,
             description="member ID"
             )
+
         name: str = Field(
             min_length=2,
             max_length=50,
             description="member name"
             )
+
         rank: Rank
         age: int = Field(
             ge=18,
             le=80,
             description="member age"
             )
+
         specialization: str = Field(
             min_length=3,
             max_length=30,
             description="member specialization"
             )
+
         years_experience: int = Field(
             ge=0,
             le=50,
             description="member experience"
             )
+
         is_active: bool = Field(
             default=True,
             description="if the member is active"
@@ -84,20 +95,28 @@ class SpaceMission(BaseModel):
     @model_validator(mode="after")
     def validator(self) -> "SpaceMission":
         ranks = [member.rank.value for member in self.crew]
-        if Rank.commander.value not in ranks and Rank.captain.value not in ranks:
-            raise ValueError("Must have at least one Commander or Captain")
+
+        if Rank.commander.value not in ranks and \
+                Rank.captain.value not in ranks:
+            raise ValueError("Mission Must have at least one Commander"
+                             " or Captain")
+
         if not self.mission_id.startswith("M"):
             raise ValueError("Mission ID must start with 'M'")
+
+        experienced_members = [member for member
+                               in self.crew
+                               if member.years_experience >= 5]
         for member in self.crew:
-            if self.duration_days > 365 and\
-                    not member.years_experience >= 5:
-                raise ValueError("Long missions (> 365 days) need 50\%\ experienced crew (5+ years)")
+            if len(experienced_members) < len(self.crew) / 2:
+                raise ValueError("Long missions (> 365 days)"
+                                 " need 50%\\ experienced crew (5+ years)")
             if not member.is_active:
                 raise ValueError("All crew members must be active")
         return self
 
 
-if __name__ == "__main__":
+def main() -> None:
     try:
         print("Space Mission Crew Validation")
         print("=========================================")
@@ -150,8 +169,27 @@ if __name__ == "__main__":
         )
         print("Crew members:")
         for member in valid_mession.crew:
-            print(f"- {member.name} ({member.rank.value}) - {member.specialization}")
+            print(f"- {member.name} ({member.rank.value}) - "
+                  f"{member.specialization}")
         print("\n=========================================")
 
+        crews_2 = [member_2, member_3]
+        _ = SpaceMission(
+            mission_id="Mv2024_MARS",
+            mission_name="Mars Colony Establishment",
+            destination="Mars",
+            launch_date=datetime.now(),
+            duration_days=900,
+            budget_millions=2500.0,
+            crew=crews_2
+        )
+
     except ValidationError as e:
-        print(f"Expected validation error:\n{e.errors()[0]['msg'][13:]}")
+        print(f"Expected validation error:\n{e.errors()[0]['msg']}")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        print(f"Unexcepted Error: {e}")
