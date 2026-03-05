@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field, ValidationError
 from typing import Optional
 from datetime import datetime
 
+
 class SpaceStation(BaseModel):
     station_id: str = Field(min_length=3, max_length=10)
     name: str = Field(min_length=1, max_length=50)
@@ -48,8 +49,7 @@ def main() -> None:
 
         )
     except ValidationError as e:
-        for error in e.errors():
-            print(error['msg'])
+        print(e.errors()[0]['msg'])
 
 if __name__ == "__main__":
     main()
