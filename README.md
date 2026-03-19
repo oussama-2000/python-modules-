@@ -1,3 +1,5 @@
+<img src="https://beecrowd.com/wp-content/uploads/2024/04/2022-07-19-Melhores-cursos-de-Python.jpg" width="100%" />
+
 This repository contains my solutions and learning journey through the Python Modules (00 to 10) from the 42 curriculum.
 
 The objective of these modules is to build a solid foundation in Python programming, progressing from fundamental concepts to more advanced topics such as object oriented programming (OOP), abstraction, design patterns, and application structuring through modularization and packaging.
